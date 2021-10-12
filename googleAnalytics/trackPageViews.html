@@ -1,0 +1,39 @@
+<script>
+    // The function overriding used for tracking of Page changes in Single Page Application (SPA). The function overrides the inbuilt MDN pushstate function and dispatch a push state event for customizations 
+    // do not edit this code
+   window.history.pushState = ( f => function pushState(){
+        var ret = f.apply(this, arguments);
+        window.dispatchEvent(new Event('pushstate'));
+        return ret;
+    })(history.pushState);
+</script>
+
+<!-- This snippet loads the gtag.js library, establishes GA_MEASUREMENT_ID as the default Google Analytics property ID -->
+<x-oasis-script async src="https://www.googletagmanager.com/gtag/js?{id}"></x-oasis-script>
+
+<x-oasis-script hidden="true">
+    // gtag basic snippet code do not change
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    
+    // the gtag config function to configure the measurement/property ID on the gtag tracker with other avilable settings i.e cookieDomain auto that sets the _ga cookie on the Top Level Domain of the page.
+    // the configuration function sends a default pageview hit to Google Analytics Meaurement/Property ID i.e UA-XXXXXXXXX-X.
+    
+    gtag('config', '{id}', {
+        'cookie_domain': 'auto',
+    });
+    
+     window.addEventListener('pushstate', function (e) {
+    
+        // the gtag config function to re-configure the measurement/property ID on the gtag tracker with other available settings i.e cookieDomain auto that sets the _ga cookie on the Top Level Domain of the page.
+        // the configuration constructor sends a default pageview hit with the SPA journey change pageview to Google Analytics Meaurement/Property ID i.e UA-XXXXXXXXX-X.
+        gtag('config', '{id}', {
+            'cookie_domain': 'auto',
+            'page_location': e.target.document.URL// to send the pageview with the new SPA changed URL
+        });
+    
+    }, false);  
+</x-oasis-script>
