@@ -1,0 +1,52 @@
+<script>
+    // The function overriding used for tracking of Page changes in Single Page Application (SPA). The function overrides the inbuilt MDN pushstate function and dispatch a push state event for customizations 
+    // do not edit this code
+    window.history.pushState = ( f => function pushState(){
+        var ret = f.apply(this, arguments);
+        window.dispatchEvent(new Event('pushstate'));
+        return ret;
+    })(history.pushState);
+</script>
+     
+<!--This snippet loads the gtag.js library, establishes GA_MEASUREMENT_ID as the default Google Analytics property ID-->
+<x-oasis-script async src="https://www.googletagmanager.com/gtag/js?{id}"></x-oasis-script>
+
+<x-oasis-script hidden="true">
+    // gtag basic snippet code do not change
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    
+    gtag('config', '{id}', {
+        'cookie_domain': 'auto',
+    });
+    
+    document.onreadystatechange = function () {
+        if (document.readyState === 'complete') {
+            // function call to track the new contents post SPA journey 
+            buttonAndLinkClick();
+        }
+    }
+    
+    function buttonAndLinkClick() {
+        document.querySelector('.button_class').addEventListener('click', (e) => {
+            // gtag function call to send event hit to Google Analytics along with the variables
+            gtag('event', 'CTA Button', {
+                'event_category': 'link_button_click',
+                'event_label': 'Submit button clicked'
+            });
+
+        });
+        
+        // query selector to capture the anchor element i.e with class download_link
+        document.querySelector('.download_link').addEventListener('click', (e) => {
+            //gtag function call to send event hit to Google Analytics along with the variables
+            gtag('event', 'Link Button', {
+                'event_category': 'link_button_click',
+                'event_label': 'Download link clicked'
+            });
+        });
+    }
+</x-oasis-script>

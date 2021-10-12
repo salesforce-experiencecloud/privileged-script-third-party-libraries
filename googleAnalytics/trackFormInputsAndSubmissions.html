@@ -1,0 +1,63 @@
+<script>
+    // The function overriding used for tracking of Page changes in Single Page Application (SPA). The function overrides the inbuilt MDN pushstate function and dispatch a push state event for customizations 
+    // do not edit this code
+    window.history.pushState = ( f => function pushState(){
+        var ret = f.apply(this, arguments);
+        window.dispatchEvent(new Event('pushstate'));
+        return ret;
+    })(history.pushState);
+</script>
+     
+<!--This snippet loads the gtag.js library, establishes GA_MEASUREMENT_ID as the default Google Analytics property ID-->
+<x-oasis-script async src="https://www.googletagmanager.com/gtag/js?{id}"></x-oasis-script>
+    
+<x-oasis-script hidden="true">
+    // gtag basic snippet code do not change
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    
+    gtag('config', '{id}', {
+        'cookie_domain': 'auto',
+    });
+    
+    document.onreadystatechange = function () {
+        if (document.readyState === 'complete') {
+            // function call to track the new contents post SPA journey 
+            formClick();
+        }
+    }
+    
+    function formClick() {
+        var flag_form = true;
+
+        // query selector to capture the form input element i.e with class subscription_form_class
+        // Event Listener to trigger on the change of the form element
+        document.querySelector('form[class=subscription_form_class] > input[type=email]').addEventListener('change', (e) => {
+            
+            // gtag function call to send event hit to Google Analytics along with the variables
+            gtag('event', 'Input Changed', {
+                'event_category': 'input_change',
+                'event_label': 'Inputs in form changed'
+            });
+        });
+
+        // query selector to capture the form element i.e with class subscription_form_class
+        // Event Listener to trigger on the submit of the form element
+        document.querySelector('.subscription_form_button').addEventListener('submit', (e) => {
+            if (flag_form) {
+
+                // set the flag to false for eleminating debouncing
+                flag_form = false;
+
+                // gtag function call to send event hit to Google Analytics along with the variables
+                gtag('event', 'Form Submit Changed', {
+                    'event_category': 'form_submit_success',
+                    'event_label': 'Form Submitted'
+                });
+            }
+        });
+    }
+</x-oasis-script>
