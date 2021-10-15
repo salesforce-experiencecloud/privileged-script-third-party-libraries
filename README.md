@@ -4,7 +4,7 @@ Discover how visitors engage with your LWR site by using Google Analytics to tra
 
 Use the provided code samples in the head markup of your LWR site.
 
-See [Examples: Use Google Analytics in LWR Sites](https://developer.salesforce.com/docs/atlas.en-us.exp_cloud_lwr.meta/exp_cloud_lwr/advanced_use_google_analytics.html) for more information.
+See [Examples: Use Google Analytics in LWR Sites](https://developer.salesforce.com/docs/atlas.en-us.exp_cloud_lwr.meta/exp_cloud_lwr/advanced_use_google_analytics.htm) for more information.
 
 **Code Samples**
 
